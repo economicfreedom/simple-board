@@ -1,8 +1,10 @@
 package com.example.simpleboard.reply.service;
 
+import com.example.simpleboard.crud.CRUDAbstractService;
 import com.example.simpleboard.post.db.PostRepository;
 import com.example.simpleboard.reply.db.ReplyEntity;
 import com.example.simpleboard.reply.db.ReplyRepository;
+import com.example.simpleboard.reply.model.ReplyDto;
 import com.example.simpleboard.reply.model.ReplyRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,34 +14,34 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ReplyService {
+public class ReplyService extends CRUDAbstractService<ReplyDto,ReplyEntity> {
 
-    private final ReplyRepository replyRepository;
-    private final PostRepository postRepository;
-    public ReplyEntity create(
-            ReplyRequest replyRequest
-
-    ){
-
-        var optionalPostEntity = postRepository.findById(replyRequest.getPostId());
-        if (optionalPostEntity.isEmpty()){
-            throw new RuntimeException("게시물이 존재 하지 않습니다 : "+replyRequest.getPostId());
-        }
-
-        ReplyEntity entity = ReplyEntity.builder()
-                .post(optionalPostEntity.get())
-                .userName(replyRequest.getUserName())
-                .password(replyRequest.getPassword())
-                .status("REGISTERED")
-                .title(replyRequest.getTitle())
-                .content(replyRequest.getContent())
-                .repliedAt(LocalDateTime.now())
-                .build();
-
-        return replyRepository.save(entity);
-
-    }
-    public List<ReplyEntity> findAllByPostId(Long postId){
-        return replyRepository.findAllByPostIdAndStatusOrderByIdDesc(postId,"REGISTERED");
-    }
+//    private final ReplyRepository replyRepository;
+//    private final PostRepository postRepository;
+//    public ReplyEntity create(
+//            ReplyRequest replyRequest
+//
+//    ){
+//
+//        var optionalPostEntity = postRepository.findById(replyRequest.getPostId());
+//        if (optionalPostEntity.isEmpty()){
+//            throw new RuntimeException("게시물이 존재 하지 않습니다 : "+replyRequest.getPostId());
+//        }
+//
+//        ReplyEntity entity = ReplyEntity.builder()
+//                .post(optionalPostEntity.get())
+//                .userName(replyRequest.getUserName())
+//                .password(replyRequest.getPassword())
+//                .status("REGISTERED")
+//                .title(replyRequest.getTitle())
+//                .content(replyRequest.getContent())
+//                .repliedAt(LocalDateTime.now())
+//                .build();
+//
+//        return replyRepository.save(entity);
+//
+//    }
+//    public List<ReplyEntity> findAllByPostId(Long postId){
+//        return replyRepository.findAllByPostIdAndStatusOrderByIdDesc(postId,"REGISTERED");
+//    }
 }

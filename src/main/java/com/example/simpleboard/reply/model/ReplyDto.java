@@ -1,13 +1,13 @@
-package com.example.simpleboard.reply.db;
+package com.example.simpleboard.reply.model;
 
 import com.example.simpleboard.post.db.PostEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
 
 @Getter
 @Setter
@@ -15,22 +15,18 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @ToString
-@Entity(name = "reply")
-//엔티티는 뷰단 까지 내려가지 않는게 좋음
-public class ReplyEntity {
+@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+public class ReplyDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+
     private Long id;
-    @ManyToOne
-    @ToString.Exclude
-    @JsonIgnore
-    private PostEntity post; // post => _id => post_id
+    private Long postId;
     private String userName;
     private String password;
     private String status;
     private String title;
-    @Column(columnDefinition = "TEXT")
+
 
     private String content;
     private LocalDateTime repliedAt;
